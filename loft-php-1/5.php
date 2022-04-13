@@ -1,21 +1,10 @@
 <?php
 
-$bmw["model"] = "X5";
-$bmw["speed"] = 120;
-$bmw["doors"] = 5;
-$bmw["year"] = "2015";
-
-$toyota["model"] = "Corolla";
-$toyota["speed"] = 100;
-$toyota["doors"] = 5;
-$toyota["year"] = "2013";
-
-$opel["model"] = "Astra";
-$opel["speed"] = 110;
-$opel["doors"] = 5;
-$opel["year"] = "2010";
-
-$cars = ["BMW" => $bmw, "Toyota" => $toyota, "Opel" => $opel];
+$cars = [
+    "BMW" => ["model" => "X5", "speed" => 120, "doors" => 5, "year" => "2015"],
+    "Toyota" => ["model" => "Corolla", "speed" => 100, "doors" => 5, "year" => "2013"],
+    "Opel" => ["model" => "Astra", "speed" => 110, "doors" => 5, "year" => "2010"]
+];
 
 foreach($cars as $car => $value)
 {
