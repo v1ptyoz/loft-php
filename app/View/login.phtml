@@ -1,0 +1,44 @@
+<html>
+<head>
+    <style>
+
+    </style>
+</head>
+    <body>
+        <h3 style="text-align: center"><?=$this->title;?></h3>
+        <?php
+        /** @var \App\Model\User $user */
+        $user = $this->user;
+        ?>
+
+        <div style="width: 900px; margin: 0 auto">
+            <div style="display: flex; justify-content: space-around; align-items: flex-start">
+            <?php if(!$user): ?>
+                <div class="block">
+                    <h3>Зарегистрироваться</h3>
+                    <form action="/login/register" method="post" style="display:flex; flex-direction: column; gap: 5px">
+                        <div class="field">Email:</div> <input type="text" value="" name="email"><br>
+                        <div class="field">Имя:</div> <input type="text" value="" name="name"><br>
+                        <div class="field">Пароль:</div> <input type="password" name="password"><br>
+                        <div class="field">Подтверждение пароля:</div> <input type="password" name="confirm"><br>
+                        <input type="submit" value="Зарегистрироваться">
+                    </form>
+                </div>
+                <div class="block">
+                    <h3>Войти</h3>
+                    <form action="/login/auth" method="post" style="display:flex; flex-direction: column; gap: 5px">
+                        <div class="field">Email:</div> <input type="text" value="" name="email"><br>
+                        <div class="field">Пароль:</div> <input type="password" value="" name="password"><br>
+                        <input type="submit" value="Войти">
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <?php else: ?>
+        Вы вошли как <?=$user->getName();?>
+        <?php endif; ?>
+
+    </body>
+</head>
+</html>

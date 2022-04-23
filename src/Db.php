@@ -30,11 +30,12 @@ class Db
         $host = DB_HOST;
         $dbName = DB_NAME;
         $dbUser = DB_USER;
+        $dbPort = DB_PORT;
         $dbPassword = DB_PASSWORD;
 
         if (!$this->pdo) {
             $this->pdo = new \PDO(
-                "mysql:host=$host;dbname=$dbName",
+                "mysql:host=$host;port=$dbPort;dbname=$dbName",
                 $dbUser,
                 $dbPassword,
                 [
