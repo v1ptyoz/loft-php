@@ -24,7 +24,6 @@ class Login extends AbstractController
     {
         $email = (string) $_POST['email'];
         $password = (string) $_POST['password'];
-
         $user = User::getByEmail($email);
         if (!$user) {
             return 'Неверный логин и пароль';

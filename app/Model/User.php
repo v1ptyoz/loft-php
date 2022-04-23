@@ -68,13 +68,12 @@ class User
                     name, 
                     password,
                     email,
-                    created_at,
-                    isAdmin
+                    created_at
                     ) VALUES (
                     :name, 
-                    :password, 
-                    :created_at,
+                    :password,
                     :email,
+                    :created_at
                 )',
             __METHOD__,
             [
