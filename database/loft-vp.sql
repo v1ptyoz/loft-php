@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost:8889
--- Время создания: Апр 23 2022 г., 09:17
+-- Время создания: Апр 23 2022 г., 09:40
 -- Версия сервера: 5.7.34
 -- Версия PHP: 8.0.8
 
@@ -43,7 +43,8 @@ INSERT INTO `messages` (`id`, `user_id`, `text`, `created_at`, `image`) VALUES
 (4, 5, 'Тестовое сообщение от пользователя', '2022-04-23 04:55:43', ''),
 (6, 5, 'Еще одной с картиной ', '2022-04-23 05:01:37', '076bcae14cc07cdfd5cc254004e8c8df7789939a.jpg'),
 (7, 6, 'Сообщение от другого пользователя User2', '2022-04-23 09:02:20', ''),
-(8, 6, 'Еще одно от User2', '2022-04-23 09:12:48', '');
+(8, 6, 'Еще одно от User2', '2022-04-23 09:12:48', ''),
+(9, 7, 'Сообщение от третьего пользователя и тоже с картинкой', '2022-04-23 09:38:33', '2be2fb84e33c2e991ce282e4f2f4d4893982af52.jpg');
 
 -- --------------------------------------------------------
 
@@ -65,8 +66,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `password`, `email`, `created_at`, `isAdmin`) VALUES
-(5, 'User', '21820d5e14a6abd59d25ceb94f7e95da8a901a55', '2022-04-23 04:39:09', 'user@mail.ru', 0),
-(6, 'User2', '21820d5e14a6abd59d25ceb94f7e95da8a901a55', '2022-04-23 09:02:04', 'user2@mail.ru', 1);
+(5, 'User', '21820d5e14a6abd59d25ceb94f7e95da8a901a55', 'user@mail.ru', '2022-04-23 04:39:09', 0),
+(6, 'User2', '21820d5e14a6abd59d25ceb94f7e95da8a901a55', '2022-04-23 09:02:04', '2022-04-23 09:02:04', 1),
+(7, 'User3', '29c38eda940f72c5e9bcd01b55603fb2d7bb9c57', 'user3@mail.ru', '2022-04-23 09:38:09', 0);
 
 --
 -- Индексы сохранённых таблиц
@@ -95,13 +97,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц

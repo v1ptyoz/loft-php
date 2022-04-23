@@ -13,7 +13,7 @@ class Application
     public function run()
     {
         $view = new View();
-        $view->setTemplatePath(getcwd() . '/../app/View');
+        $view->setTemplatePath(getcwd() . '/app/View');
 
         /** @var AbstractController $controller */
 
