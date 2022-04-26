@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Model\Message;
 use Base\AbstractController;
+use Base\Mail;
 
 class Blog extends AbstractController
 {
@@ -51,8 +52,13 @@ class Blog extends AbstractController
         }
 
         $message->save();
-        $this->redirect('/blog');
 
+        $user = $this->getUser()->getName();
+        $mail_message = "Пользователь $user добавил новое сообщение";
+        $mail = new Mail($mail_message);
+        $mail->send();
+
+        $this->redirect('/blog');
     }
 
     private function error()
