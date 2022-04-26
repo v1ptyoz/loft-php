@@ -147,7 +147,7 @@ class Message
     {
         if (file_exists($file)) {
             $this->image = $this->genFileName();
-            move_uploaded_file($file,getcwd() . '/images/' . $this->image);
+            move_uploaded_file($file, getcwd() . '/images/' . $this->image);
         }
     }
 

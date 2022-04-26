@@ -1,7 +1,8 @@
 {
 
   "require": {
-    "swiftmailer/swiftmailer": "dev-master"
+    "swiftmailer/swiftmailer": "dev-master",
+    "intervention/image": "dev-master"
   },
 
   "autoload": {

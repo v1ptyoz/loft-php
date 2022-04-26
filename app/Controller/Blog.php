@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Model\Message;
 use Base\AbstractController;
 use Base\Mail;
+use Intervention\Image\ImageManager;
 
 class Blog extends AbstractController
 {
@@ -48,6 +49,16 @@ class Blog extends AbstractController
         ]);
 
         if (isset($_FILES['image']['tmp_name'])) {
+            $manager = new ImageManager(['driver' => 'gd']);
+
+            $image = $manager->make($_FILES['image']['tmp_name'])
+                ->resize(200, null, function ($image) {
+                    $image->aspectRatio();
+                })
+                ->text("LOFTSCHOOL", 50, 50, function($font) {
+                    $font->color('#FFFFFF');
+                })
+                ->save();
             $message->loadFile($_FILES['image']['tmp_name']);
         }
 
