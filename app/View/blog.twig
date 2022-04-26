@@ -1,0 +1,37 @@
+<div style="width: 900px; margin: 0 auto">
+    <h3 style="text-align: center">{{ title }}</h3>
+    {% if messages %}
+        <div style="display: flex; flex-direction: column; gap: 20px">
+            {% for message in messages %}
+            <div style="width: 100%; border: 2px solid forestgreen; border-radius: 10px; padding: 5px">
+                {% if user.isAdmin %}
+                    <div class="admin">
+                        <a href="/admin/deleteMessage/?id={{ message.id }}">Удалить сообщение</a>
+                    </div>
+                {% endif %}
+                <span style="color: darkgray">{{ message.createdAt }}</span>
+                {% if message.user %}
+                    <span style="color: cornflowerblue">{{ message.user.name }}</span>
+                {% else %}
+                    <span style="color: red; text-decoration: line-through;">Пользователь удален</span>
+                {% endif %}
+                <div style="border-top: 1px solid forestgreen; padding-top: 10px">{{ message.text }}</div>
+                {% if message.image %}
+                    <div><img src="/images/{{ message.image }}" style="width: 150px;"></div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        Нет сообщений...<br><br><br>
+    {% endif %}
+
+    <form enctype="multipart/form-data" action="/blog/addMessage" method="post" style="width: 500px; margin: 0 auto">
+        <h4>Добавить сообщение:</h4>
+        <textarea style="width: 100%; height: 150px; padding: 15px; border-radius: 10px; border-color: tomato" type="text" value="" name="text"></textarea><br><br>
+        Добавьте картинку: <input type="file" name="image"><br>
+        <div style="text-align: center; margin-top: 30px">
+            <input type="submit" value="Отправить" style="cursor: pointer; width: 200px; height: 30px;">
+        </div>
+    </form>
+</div>

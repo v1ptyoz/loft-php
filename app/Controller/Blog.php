@@ -25,7 +25,8 @@ class Blog extends AbstractController
                 }
             });
         }
-        return $this->view->render('blog.phtml', [
+        return $this->view->render('blog.twig', [
+            'title' => "Список сообщений: ",
             'messages' => $messages,
             'user' => $this->getUser()
         ]);
@@ -48,7 +49,7 @@ class Blog extends AbstractController
             'created_at' => date('Y-m-d H:i:s')
         ]);
 
-        if (isset($_FILES['image']['tmp_name'])) {
+        if (strlen($_FILES['image']['tmp_name']) > 0) {
             $manager = new ImageManager(['driver' => 'gd']);
 
             $image = $manager->make($_FILES['image']['tmp_name'])

@@ -12,10 +12,9 @@ class Login extends AbstractController
             $this->redirect('/blog');
         }
         return $this->view->render(
-            'login.phtml',
+            'login.twig',
             [
                 'title' => 'Главная',
-                'user' => $this->getUser(),
             ]
         );
     }
