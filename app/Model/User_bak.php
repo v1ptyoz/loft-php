@@ -1,29 +1,16 @@
 <?php
 namespace App\Model;
-require_once '../../src/Db.php';
-use App\Model\Message as Message;
-use Illuminate\Database\Eloquent\Model;
 
-class User extends Model {
-    public $table = "users";
-    protected $primaryKey = "id";
+use Base\Db;
 
-    public function messages() {
-        return $this->hasMany(Message::class, 'user_id', 'id');
-    }
 
-    public function __construct(array $attributes = [])
-    {
-        echo "Constructor";
-        parent::__construct($attributes);
-    }
-}
 
 //class User
 //{
 //    private int $id;
 //    private string $email;
 //    private string $name;
+//    private string $createdAt;
 //    private string $password;
 //    private int $isAdmin;
 //
@@ -32,6 +19,7 @@ class User extends Model {
 //        $this->name = $data['name'];
 //        $this->email = $data['email'];
 //        $this->password = $data['password'];;
+//        $this->createdAt = $data['created_at'];
 //        $this->isAdmin = $data['isAdmin'] ?? 0;
 //    }
 //

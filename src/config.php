@@ -5,4 +5,3 @@ const DB_HOST = 'localhost';
 const DB_PORT = '3306';
 const DB_PASSWORD = 'loft-vp';
 
-const ADMIN_IDS = [9];

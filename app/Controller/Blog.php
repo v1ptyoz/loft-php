@@ -10,6 +10,7 @@ class Blog extends AbstractController
 {
     public function index()
     {
+        var_dump($this);
         if (!$this->getUser()) {
             $this->redirect('/login');
         }
@@ -32,46 +33,46 @@ class Blog extends AbstractController
         ]);
     }
 
-    public function addMessage()
-    {
-        if (!$this->getUser()) {
-            $this->redirect('/login');
-        }
-
-        $text = (string) $_POST['text'];
-        if (!$text) {
-            $this->error('Сообщение не может быть пустым');
-        }
-
-        $message = new Message([
-            'text' => $text,
-            'user_id' => $this->getUserId(),
-            'created_at' => date('Y-m-d H:i:s')
-        ]);
-
-        if (strlen($_FILES['image']['tmp_name']) > 0) {
-            $manager = new ImageManager(['driver' => 'gd']);
-
-            $image = $manager->make($_FILES['image']['tmp_name'])
-                ->resize(200, null, function ($image) {
-                    $image->aspectRatio();
-                })
-                ->text("LOFTSCHOOL", 50, 50, function($font) {
-                    $font->color('#FFFFFF');
-                })
-                ->save();
-            $message->loadFile($_FILES['image']['tmp_name']);
-        }
-
-        $message->save();
-
-        $user = $this->getUser()->getName();
-        $mail_message = "Пользователь $user добавил новое сообщение";
-        $mail = new Mail($mail_message);
-        $mail->send();
-
-        $this->redirect('/blog');
-    }
+//    public function addMessage()
+//    {
+//        if (!$this->getUser()) {
+//            $this->redirect('/login');
+//        }
+//
+//        $text = (string) $_POST['text'];
+//        if (!$text) {
+//            $this->error('Сообщение не может быть пустым');
+//        }
+//
+//        $message = new Message([
+//            'text' => $text,
+//            'user_id' => $this->getUserId(),
+//            'created_at' => date('Y-m-d H:i:s')
+//        ]);
+//
+//        if (strlen($_FILES['image']['tmp_name']) > 0) {
+//            $manager = new ImageManager(['driver' => 'gd']);
+//
+//            $image = $manager->make($_FILES['image']['tmp_name'])
+//                ->resize(200, null, function ($image) {
+//                    $image->aspectRatio();
+//                })
+//                ->text("LOFTSCHOOL", 50, 50, function($font) {
+//                    $font->color('#FFFFFF');
+//                })
+//                ->save();
+//            $message->loadFile($_FILES['image']['tmp_name']);
+//        }
+//
+//        $message->save();
+//
+//        $user = $this->getUser()->getName();
+//        $mail_message = "Пользователь $user добавил новое сообщение";
+//        $mail = new Mail($mail_message);
+//        $mail->send();
+//
+//        $this->redirect('/blog');
+//    }
 
     private function error()
     {

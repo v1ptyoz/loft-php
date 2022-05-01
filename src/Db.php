@@ -1,133 +1,164 @@
 <?php
 namespace Base;
 
-class Db
-{
-    /** @var \PDO */
-    private $pdo;
-    private $log = [];
-    private static $instance;
+require_once '../vendor/autoload.php';
 
-    private function __construct()
-    {
-    }
+use Illuminate\Database\Capsule\Manager as Capsule;
 
-    private function __clone()
-    {
-    }
+$capsule = new Capsule();
 
-    public static function getInstance(): self
-    {
-        if (!self::$instance) {
-            self::$instance = new self();
-        }
+$capsule->addConnection([
+    'driver' => 'mysql',
+    'host' => 'localhost',
+    'database' => 'loft-vp2',
+    'username' => 'loft-vp2',
+    'password' => 'loft-vp2',
+    'charset'   => 'utf8',
+    'collation' => 'utf8_unicode_ci',
+    'prefix'    => '',
+]);
 
-        return self::$instance;
-    }
+$capsule->setAsGlobal();
 
-    private function getConnection()
-    {
-        $host = DB_HOST;
-        $dbName = DB_NAME;
-        $dbUser = DB_USER;
-        $dbPort = DB_PORT;
-        $dbPassword = DB_PASSWORD;
+$capsule->bootEloquent();
 
-        if (!$this->pdo) {
-            $this->pdo = new \PDO(
-                "mysql:host=$host;port=$dbPort;dbname=$dbName",
-                $dbUser,
-                $dbPassword,
-                [
-                    \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"
-                ]
-            );
-        }
+$capsule->getConnection()->enableQueryLog();
 
-        return $this->pdo;
-    }
-
-    public function fetchAll(string $query, $_method, array $params = [])
-    {
-        $t = microtime(true);
-        $prepared = $this->getConnection()->prepare($query);
-
-        $ret = $prepared->execute($params);
-
-        if (!$ret) {
-            $errorInfo = $prepared->errorInfo();
-            trigger_error("{$errorInfo[0]}#{$errorInfo[1]}: " . $errorInfo[2]);
-            return [];
-        }
-
-        $data = $prepared->fetchAll(\PDO::FETCH_ASSOC);
-        $affectedRows = $prepared->rowCount();
-        $this->log[] = [$query, microtime(true) - $t, $_method, $affectedRows];
-
-        return $data;
-    }
-
-    public function fetchOne(string $query, $_method, array $params = [])
-    {
-        $t = microtime(true);
-        $prepared = $this->getConnection()->prepare($query);
-
-        $ret = $prepared->execute($params);
-
-        if (!$ret) {
-            $errorInfo = $prepared->errorInfo();
-            trigger_error("{$errorInfo[0]}#{$errorInfo[1]}: " . $errorInfo[2]);
-            return [];
-        }
-
-        $data = $prepared->fetchAll(\PDO::FETCH_ASSOC);
-        $affectedRows = $prepared->rowCount();
-
-
-        $this->log[] = [$query, microtime(true) - $t, $_method, $affectedRows];
-        if (!$data) {
-            return false;
-        }
-        return reset($data);
-    }
-
-    public function exec(string $query, $_method, array $params = []): int
-    {
-        $t = microtime(1);
-        $pdo = $this->getConnection();
-        $prepared = $pdo->prepare($query);
-
-        $ret = $prepared->execute($params);
-
-
-        if (!$ret) {
-            $errorInfo = $prepared->errorInfo();
-            trigger_error("{$errorInfo[0]}#{$errorInfo[1]}: " . $errorInfo[2]);
-            return -1;
-        }
-        $affectedRows = $prepared->rowCount();
-
-        $this->log[] = [$query, microtime(1) - $t, $_method, $affectedRows];
-
-        return $affectedRows;
-    }
-
-    public function lastInsertId()
-    {
-        return $this->getConnection()->lastInsertId();
-    }
-
-    public function getLogHTML()
-    {
-        if (!$this->log) {
-            return '';
-        }
-        $res = '';
-        foreach ($this->log as $elem) {
-            $res = $elem[1] . ': ' . $elem[0] . ' (' . $elem[2] . ') [' . $elem[3] . ']' . "\n";
-        }
-        return '<pre>' . $res .'</pre>';
-    }
-
-
+function printLog() {
+    echo "<pre>";
+    $log = Capsule::connection()->getQueryLog();
+    echo $log["query"] . 'bind: ' . json_encode($log["bindings"]) . "<br>";
 }
+
+//namespace Base;
+
+//class Db
+//{
+//    /** @var \PDO */
+//    private $pdo;
+//    private $log = [];
+//    private static $instance;
+//
+//    private function __construct()
+//    {
+//    }
+//
+//    private function __clone()
+//    {
+//    }
+//
+//    public static function getInstance(): self
+//    {
+//        if (!self::$instance) {
+//            self::$instance = new self();
+//        }
+//
+//        return self::$instance;
+//    }
+//
+//    private function getConnection()
+//    {
+//        $host = DB_HOST;
+//        $dbName = DB_NAME;
+//        $dbUser = DB_USER;
+//        $dbPort = DB_PORT;
+//        $dbPassword = DB_PASSWORD;
+//
+//        if (!$this->pdo) {
+//            $this->pdo = new \PDO(
+//                "mysql:host=$host;port=$dbPort;dbname=$dbName",
+//                $dbUser,
+//                $dbPassword,
+//                [
+//                    \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"
+//                ]
+//            );
+//        }
+//
+//        return $this->pdo;
+//    }
+//
+//    public function fetchAll(string $query, $_method, array $params = [])
+//    {
+//        $t = microtime(true);
+//        $prepared = $this->getConnection()->prepare($query);
+//
+//        $ret = $prepared->execute($params);
+//
+//        if (!$ret) {
+//            $errorInfo = $prepared->errorInfo();
+//            trigger_error("{$errorInfo[0]}#{$errorInfo[1]}: " . $errorInfo[2]);
+//            return [];
+//        }
+//
+//        $data = $prepared->fetchAll(\PDO::FETCH_ASSOC);
+//        $affectedRows = $prepared->rowCount();
+//        $this->log[] = [$query, microtime(true) - $t, $_method, $affectedRows];
+//
+//        return $data;
+//    }
+//
+//    public function fetchOne(string $query, $_method, array $params = [])
+//    {
+//        $t = microtime(true);
+//        $prepared = $this->getConnection()->prepare($query);
+//
+//        $ret = $prepared->execute($params);
+//
+//        if (!$ret) {
+//            $errorInfo = $prepared->errorInfo();
+//            trigger_error("{$errorInfo[0]}#{$errorInfo[1]}: " . $errorInfo[2]);
+//            return [];
+//        }
+//
+//        $data = $prepared->fetchAll(\PDO::FETCH_ASSOC);
+//        $affectedRows = $prepared->rowCount();
+//
+//
+//        $this->log[] = [$query, microtime(true) - $t, $_method, $affectedRows];
+//        if (!$data) {
+//            return false;
+//        }
+//        return reset($data);
+//    }
+//
+//    public function exec(string $query, $_method, array $params = []): int
+//    {
+//        $t = microtime(1);
+//        $pdo = $this->getConnection();
+//        $prepared = $pdo->prepare($query);
+//
+//        $ret = $prepared->execute($params);
+//
+//
+//        if (!$ret) {
+//            $errorInfo = $prepared->errorInfo();
+//            trigger_error("{$errorInfo[0]}#{$errorInfo[1]}: " . $errorInfo[2]);
+//            return -1;
+//        }
+//        $affectedRows = $prepared->rowCount();
+//
+//        $this->log[] = [$query, microtime(1) - $t, $_method, $affectedRows];
+//
+//        return $affectedRows;
+//    }
+//
+//    public function lastInsertId()
+//    {
+//        return $this->getConnection()->lastInsertId();
+//    }
+//
+//    public function getLogHTML()
+//    {
+//        if (!$this->log) {
+//            return '';
+//        }
+//        $res = '';
+//        foreach ($this->log as $elem) {
+//            $res = $elem[1] . ': ' . $elem[0] . ' (' . $elem[2] . ') [' . $elem[3] . ']' . "\n";
+//        }
+//        return '<pre>' . $res .'</pre>';
+//    }
+//
+//
+//}
