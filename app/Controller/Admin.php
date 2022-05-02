@@ -9,7 +9,7 @@ class Admin extends AbstractController
     public function preDispatch()
     {
         parent::preDispatch();
-        if(!$this->getUser() || !$this->getUser()->isAdmin()) {
+        if(!$this->getUser() || !$this->getUser()->isAdmin) {
             $this->redirect('/');
         }
     }
@@ -17,7 +17,7 @@ class Admin extends AbstractController
     public function deleteMessage()
     {
         $messageId = (int) $_GET['id'];
-        Message::deleteMessage($messageId);
+        Message::find($messageId)->delete();
         $this->redirect('/blog');
     }
 }
