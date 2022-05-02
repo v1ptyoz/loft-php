@@ -21,27 +21,14 @@ class View
         return $this->data[$name];
     }
 
-//    public function render(string $tpl, $data = []): string
-//    {
-//        foreach ($data as $key => $value) {
-//            $this->data[$key] = $value;
-//        }
-//        ob_start();
-//        include $this->templatePath . '/' . $tpl;
-//        $data = ob_get_clean();
-//        return $data;
-//    }
-
     public function render(string $tpl, $data = []) {
         $twig = $this->getTwig();
-
         ob_start(null, null,  PHP_OUTPUT_HANDLER_STDFLAGS );
         try {
             echo $twig->render($tpl, $data);
         } catch (\Exception $e) {
             trigger_error($e->getMessage());
         }
-
         return ob_get_clean();
     }
 

@@ -78,7 +78,7 @@ class Login extends AbstractController
         $this->redirect('/blog');
     }
 
-    private static function getPasswordHash(string $password)
+    public static function getPasswordHash(string $password)
     {
         return sha1('7sadf68as7df52oi3h4l2iu' . $password);
     }
