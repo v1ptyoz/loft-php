@@ -1,7 +1,7 @@
 <?php
 namespace Base;
 
-class Db
+class Db_bak
 {
     /** @var \PDO */
     private $pdo;

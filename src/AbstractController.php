@@ -2,7 +2,6 @@
 namespace Base;
 
 use App\Model\User;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AbstractController
 {
@@ -19,14 +18,16 @@ class AbstractController
     public function getUser(): ?User
     {
         $userId = $this->session->getUserId();
-        if ($userId) {
+
+        if (!$userId) {
             return null;
         }
 
-        $user = User::findOrFail($userId);
-        if ($user instanceof ModelNotFoundException) {
+        $user = User::find($userId);
+        if (!$user) {
             return null;
         }
+
         return $user;
     }
 

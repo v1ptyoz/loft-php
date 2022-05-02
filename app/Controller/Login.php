@@ -3,15 +3,14 @@ namespace App\Controller;
 
 use App\Model\User;
 use Base\AbstractController;
-use Illuminate\Database\QueryException;
 
 class Login extends AbstractController
 {
     public function index()
     {
-//        if ($this->getUser()) {
-//            $this->redirect('/blog');
-//        }
+        if ($this->getUser()) {
+            $this->redirect('/blog');
+        }
 
         return $this->view->render(
             'login.twig',
@@ -21,23 +20,24 @@ class Login extends AbstractController
         );
     }
 
-//    public function auth()
-//    {
-//        $email = (string) $_POST['email'];
-//        $password = (string) $_POST['password'];
-//        $user = User::getByEmail($email);
-//        if (!$user) {
-//            return 'Неверный логин и пароль';
-//        }
-//
-//        if ($user->getPassword() !== User::getPasswordHash($password)) {
-//            return 'Неверный логин и пароль';
-//        }
-//
-//        $this->session->authUser($user->getId());
-//
-//        $this->redirect('/blog');
-//    }
+    public function auth()
+    {
+        $email = (string) $_POST['email'];
+        $password = (string) $_POST['password'];
+        $user = User::getByEmail($email);
+
+        if (!$user) {
+            return 'Неверный логин и пароль';
+        }
+
+        if ($user->password !== self::getPasswordHash($password)) {
+            return 'Неверный логин и пароль';
+        }
+
+        $this->session->authUser($user->id);
+
+        $this->redirect('/blog');
+    }
 
     public function register()
     {
@@ -54,6 +54,10 @@ class Login extends AbstractController
             return 'Не задан email';
         }
 
+        if (User::where('email', $email)->first()) {
+            return "Пользователь с таким Email уже зарегистрирован";
+        }
+
         if ($password !== $confirm) {
             return 'Введенные пароли не совпадают';
         }
@@ -62,24 +66,16 @@ class Login extends AbstractController
             return 'Пароль слишком короткий';
         }
 
-        try {
-            echo "start creating"."<br>";
-            $user = new User([
-                "name"=>$name,
-                "email"=>$email,
-                "password"=>self::getPasswordHash($password)
-            ]);
-        } catch (QueryException $e) {
-            var_dump($e);
-        }
-        echo "created";
-        $user->name = $name;
-        $user->email = $email;
-        $user->password = self::getPasswordHash($password);
+        $user = new User([
+            "name" => $name,
+            "email" => $email,
+            "password" => self::getPasswordHash($password),
+            "isAdmin" => 0
+        ]);
         $user->save();
 
-//        $this->session->authUser($user->id);
-//        $this->redirect('/blog');
+        $this->session->authUser($user->id);
+        $this->redirect('/blog');
     }
 
     private static function getPasswordHash(string $password)

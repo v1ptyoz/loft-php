@@ -3,9 +3,7 @@
     "swiftmailer/swiftmailer": "dev-master",
     "intervention/image": "dev-master",
     "twig/twig": "^v3.0.5",
-    "illuminate/database": "v5.8.30",
-    "illuminate/events": "^5.8.x-dev",
-    "illuminate/container": "^5.8.x-dev"
+    "illuminate/database": "v5.8.30"
   },
 
   "autoload": {

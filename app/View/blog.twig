@@ -9,7 +9,7 @@
                         <a href="/admin/deleteMessage/?id={{ message.id }}">Удалить сообщение</a>
                     </div>
                 {% endif %}
-                <span style="color: darkgray">{{ message.createdAt }}</span>
+                <span style="color: darkgray">{{ message.created_at }}</span>
                 {% if message.user %}
                     <span style="color: cornflowerblue">{{ message.user.name }}</span>
                 {% else %}
